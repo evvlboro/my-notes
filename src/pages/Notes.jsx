@@ -15,9 +15,10 @@ function Notes() {
 
     React.useEffect(() => {
         if (fetching) {
-            axios.get(`http://localhost:3000/data?_limit=10&_page=${currentPage}`)
+            axios.get(`http://localhost:3000/data?_limit=5&_page=${currentPage}`)
                 .then(res => {
                     setNotes([...notes, ...res.data]);
+                    console.log(currentPage);
                     setCurrentPage(pervState => pervState + 1);
                     setTotalCount(res.headers['x-total-count']);
                 })
