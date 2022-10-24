@@ -13,13 +13,29 @@ function Notes() {
     const [fetching, setFetching] = React.useState(true);
     const [totalCount, setTotalCount] = React.useState(0);
 
+    const scrollHandler = (event) => {
+        if (event.target.documentElement.scrollHeight - (event.target.documentElement.scrollTop + window.innerHeight) < 100 
+            && notes.length < totalCount
+        ) {
+            setFetching(true);
+        }
+    }
+
+    React.useEffect(() => {
+        document.addEventListener('scroll', scrollHandler);
+
+        return function() {
+            document.removeEventListener('scroll', scrollHandler);
+        }
+    }, [totalCount]);
+
     React.useEffect(() => {
         if (fetching) {
             axios.get(`http://localhost:3000/data?_limit=5&_page=${currentPage}`)
                 .then(res => {
+                    console.log('fetching');
                     setNotes([...notes, ...res.data]);
-                    console.log(currentPage);
-                    setCurrentPage(pervState => pervState + 1);
+                    setCurrentPage(currentPage + 1);
                     setTotalCount(res.headers['x-total-count']);
                 })
                 .finally(() => {
@@ -36,22 +52,6 @@ function Notes() {
     const removeNote = (note) => {
         setNotes(notes.filter(n => n.id !== note.id));
     }
-
-    const scrollHandler = (event) => {
-        if (event.target.documentElement.scrollHeight - (event.target.documentElement.scrollTop + window.innerHeight) < 100 
-            && notes.length < totalCount
-        ) {
-            setFetching(true);
-        }
-    }
-
-    React.useEffect(() => {
-        document.addEventListener('scroll', scrollHandler);
-
-        return function() {
-            document.removeEventListener('scroll', scrollHandler);
-        }
-    });
 
     return (
         <main className="main">
