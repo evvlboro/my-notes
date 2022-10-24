@@ -1,0 +1,81 @@
+@import url(../vendor/normalize.css);
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+li {
+    list-style-type: none;
+}
+
+.header {
+    background-color: teal;
+    padding: 15px;
+}
+
+.header__title {
+    color: white;
+    margin: 0;
+}
+
+.main {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.note {
+    display: flex;
+    flex-direction: column;
+
+    border: solid 1px teal;
+    border-radius: 15px;
+    padding: 15px;
+    margin: 5px;
+}
+
+.note__title {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: solid 1px teal;
+}
+
+.note__title-text {
+    margin: 0;
+    padding: 0;
+    margin: auto 0;
+}
+
+.note__btns-container {
+    display: flex;
+}
+
+.note__tasks {
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.note__task {
+    display: flex;
+
+    justify-content: space-between;
+    width: 100%;
+}
+
+.note__task-name-container {
+    display: flex;
+    align-items: center;
+}
+
+.note__checkbox {
+    margin-right: 5px;
+}
+
+.form__delete {
+    display: flex;
+    justify-content: space-between;
+}
