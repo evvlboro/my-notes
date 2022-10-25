@@ -6,6 +6,7 @@ import MyModal from './UI/MyModal/MyModal';
 import UpdateForm from '../components/UpdateForm';
 import DeleteForm from './DeleteForm';
 import AddForm from '../components/AddForm';
+import axios from "axios";
 
 function NoteItem({note, remove}) {
     const [name, setName] = React.useState(note.title);
@@ -14,10 +15,32 @@ function NoteItem({note, remove}) {
     const [updateModal, setUpdateModal] = React.useState(false);
     const [deleteModal, setDeleteModal] = React.useState(false);
     const [addModal, setAddModal] = React.useState(false);
+    const [triggerUpdateName, setTriggerUpdateName] = React.useState(false);
 
     const handleComplete = () => {
         setComplete(!complete);
+        const newNote = {
+            ...note,
+            complete: (!complete).toString()
+        }
+        axios.patch(`http://localhost:3000/data/${note.id}`, newNote);
     }
+
+    const handleUpdate = () => {
+        setUpdateModal(true);
+        setTriggerUpdateName(true);
+    }
+
+    React.useEffect(() => {
+        if(triggerUpdateName){
+            const newNote = {
+                ...note,
+                title: name
+            }
+            axios.patch(`http://localhost:3000/data/${note.id}`, newNote);
+            setTriggerUpdateName(false);
+        }
+    }, [name]);
 
     const removeTask = (task) => {
         setTasks(tasks.filter(t => t.id !== task.id));
@@ -52,9 +75,7 @@ function NoteItem({note, remove}) {
                 </div>
                 <div className="note__btns-container">
                     <MyButton 
-                        onClick={() => {
-                            setUpdateModal(true);
-                        }}
+                        onClick={handleUpdate}
                     >Редактировать</MyButton>
                     <MyButton
                         onClick={()=>{

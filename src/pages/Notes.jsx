@@ -33,7 +33,6 @@ function Notes() {
         if (fetching) {
             axios.get(`http://localhost:3000/data?_limit=5&_page=${currentPage}`)
                 .then(res => {
-                    console.log('fetching');
                     setNotes([...notes, ...res.data]);
                     setCurrentPage(currentPage + 1);
                     setTotalCount(res.headers['x-total-count']);
@@ -45,23 +44,25 @@ function Notes() {
     }, [fetching]);
 
     const createNote = (newNote) => {
-        setNotes([newNote, ...notes ]);
+        setNotes([...notes, newNote]);
+        axios.post('http://localhost:3000/data', newNote);
         setAddModal(false);
     }
 
     const removeNote = (note) => {
         setNotes(notes.filter(n => n.id !== note.id));
+        axios.delete(`http://localhost:3000/data/${note.id}`);
     }
 
     return (
         <main className="main">
-            <MyButton onClick={() => setAddModal(true)}>
-                Создать заметку
-            </MyButton>
+            <NoteList notes={notes} setaAddModal={setAddModal} remove={removeNote}/>
             <MyModal visible={addModal} setVisible={setAddModal}>
                 <AddForm create={createNote} />
             </MyModal>
-            <NoteList notes={notes} setaAddModal={setAddModal} remove={removeNote}/>
+            <MyButton onClick={() => setAddModal(true)}>
+                Создать заметку
+            </MyButton>
         </main>
     );
 }
