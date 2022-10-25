@@ -1,7 +1,8 @@
 import React from "react";
 import TaskItem from './TaskItem';
 
-function TaskList({tasks, remove}) {
+function TaskList({tasks, remove, note, taskList, setTaskList}) {
+    
     return (
         <>
             {
@@ -9,11 +10,14 @@ function TaskList({tasks, remove}) {
                 &&
                 <ul className="note__tasks">
                     {
-                        tasks.map((task) => {
+                        taskList.map((task) => {
                             return <TaskItem
                                 key={task.id}
                                 task={task}
                                 remove={remove}
+                                note={note}
+                                taskList={taskList}
+                                setTaskList={setTaskList}
                             /> 
                         })
                     }

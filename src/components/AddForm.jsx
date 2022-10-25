@@ -10,16 +10,16 @@ function AddForm({create, isTask = false}) {
 
         if(!isTask){
             create({
-                id: Date.now(),
+                id: Date.now().toString(),
                 title: title,
-                complete: false,
+                complete: 'false',
                 tasks: []
             });
         } else {
             create({
-                id: Date.now(),
+                id: Date.now().toString(),
                 title: title,
-                complete: false
+                complete: 'false'
             });
         }
 

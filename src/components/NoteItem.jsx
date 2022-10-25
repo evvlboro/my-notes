@@ -43,12 +43,26 @@ function NoteItem({note, remove}) {
     }, [name]);
 
     const removeTask = (task) => {
-        setTasks(tasks.filter(t => t.id !== task.id));
+        const newTasks = tasks.filter(t => t.id !== task.id)
+        setTasks(newTasks);
+
+        const newNote = {
+            ...note,
+            tasks: newTasks
+        }
+        axios.patch(`http://localhost:3000/data/${note.id}`, newNote);
     }
 
     const createTask = (newTask) => {
         setTasks([...tasks, newTask ]);
         setAddModal(false);
+
+        const newNote = {
+            ...note,
+            tasks: [...tasks, newTask ]
+        }
+        
+        axios.patch(`http://localhost:3000/data/${note.id}`, newNote);
     }
 
     return (
@@ -84,7 +98,7 @@ function NoteItem({note, remove}) {
                     >Удалить</MyButton>
                 </div>
             </div>
-            <TaskList tasks={tasks} remove={removeTask}/>
+            <TaskList tasks={tasks} remove={removeTask} note={note} taskList={tasks} setTaskList={setTasks}/>
             <MyButton onClick={() => setAddModal(true)}>
                 Создать задачу
             </MyButton>
